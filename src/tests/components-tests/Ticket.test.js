@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Ticket from '../../components/Ticket/Ticket';
-import fetchLatestResults from '../../api/api';
+import getLatestDrawResults from '../../api/api';
 
 // Mock the fetchLatestResults function
 jest.mock('../../api/api', () => ({
@@ -11,26 +11,34 @@ jest.mock('../../api/api', () => ({
 }));
 
 describe('Ticket Component', () => {
+
+  beforeEach(() => {
+    getLatestDrawResults.mockClear();
+  });
+
+  //test data
   const possibleTicketNumbers = { primary: 35, secondary: 20 };
   const possibleDrawNumbers = { primary: 7, secondary: 1 };
 
-  beforeEach(() => {
-    fetchLatestResults.mockClear();
-  });
 
-  test('renders correctly with given props', () => {
+  test('Render the Ticket component with given props', () => {
+
     render(<Ticket type="PowerBall" possibleTicketNumbers={possibleTicketNumbers} possibleDrawNumbers={possibleDrawNumbers} />);
 
     expect(screen.getByText(/SELECT YOUR POWER BALL/i)).toBeInTheDocument();
 
-    // Select all elements with class 'number' to count them
+    // There should be a specific count of number components.
     const numberElements = document.querySelectorAll('.number');
+
     expect(numberElements.length).toBe(possibleTicketNumbers.primary + possibleTicketNumbers.secondary + possibleDrawNumbers.primary + possibleDrawNumbers.secondary);
+    
     expect(screen.getByAltText(/AutoFill icon/i)).toBeInTheDocument();
     expect(screen.getByAltText(/Clear icon/i)).toBeInTheDocument();
   });
 
-  test('fetches and displays draw numbers on AutoFill button click', async () => {
+  test('Gets and displays draw numbers when the AutoFill button is clicked', async () => {
+    
+    //mock data
     const mockData = {
       DrawResults: [
         {
@@ -39,21 +47,24 @@ describe('Ticket Component', () => {
         },
       ],
     };
-    fetchLatestResults.mockResolvedValueOnce(mockData);
+
+
+    getLatestDrawResults.mockResolvedValueOnce(mockData);
 
     render(<Ticket type="PowerBall" possibleTicketNumbers={possibleTicketNumbers} possibleDrawNumbers={possibleDrawNumbers} />);
 
     fireEvent.click(screen.getByAltText(/AutoFill icon/i));
 
-    // Check if draw numbers are displayed as expected
+    // test the draw numbers are displayed as expected
     for (const num of mockData.DrawResults[0].PrimaryNumbers) {
+
       const element = await screen.findByTestId(`container-primary-${num}`);
-      console.log(`Element found for primary number ${num}:`, element);
+     
       expect(element).toHaveClass('number');
     }
 
     const secondaryElement = await screen.findByTestId(`container-secondary-${mockData.DrawResults[0].SecondaryNumbers[0]}`);
-    console.log(`Element found for secondary number ${mockData.DrawResults[0].SecondaryNumbers[0]}:`, secondaryElement);
+    
     expect(secondaryElement).toHaveClass('number');
   });
 

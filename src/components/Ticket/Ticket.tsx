@@ -3,7 +3,7 @@ import Number from '../Number/Number';
 import DrawNumbers from '../DrawNumbers/DrawNumbers';
 import Banner from '../Banner/Banner';
 import Button from '../Button/Button';
-import fetchLatestResults from '../../api/api';
+import getLatestDrawResults from '../../api/api';
 import autoFillImage from '../../icons/autofill.png';
 import deleteImage from '../../icons/delete.png';
 
@@ -36,7 +36,7 @@ const Ticket = ({ type, possibleTicketNumbers, possibleDrawNumbers }: TicketProp
     // fetch and update the state of primary and secondary draw numbers in the ticket 
     const handleAutoFill = useCallback(async () => {
         try {
-            const data = await fetchLatestResults();
+            const data = await getLatestDrawResults();
             if (data && data.DrawResults && data.DrawResults.length > 0) {
                 const result = data.DrawResults[0];
                 setPrimaryDrawNumbers(result.PrimaryNumbers);

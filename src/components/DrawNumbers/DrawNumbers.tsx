@@ -1,4 +1,3 @@
-
 import Number from '../Number/Number';
 import './styles.css';
 
@@ -11,7 +10,7 @@ type DrawNumbersProps = {
     secondaryDrawNumbers?: number[] | undefined; // some tickets may not have secondary numbers
 };
 
-const DrawNumbers = ({ primaryDrawNumbers, secondaryDrawNumbers, possibleDrawNumbers }: DrawNumbersProps) => {
+const DrawNumbers = ({ possibleDrawNumbers, primaryDrawNumbers, secondaryDrawNumbers }: DrawNumbersProps) => {
     return (
         <div className='drawNumbersContainer'>
             <div className='ticket-numbers-container'>
@@ -20,7 +19,7 @@ const DrawNumbers = ({ primaryDrawNumbers, secondaryDrawNumbers, possibleDrawNum
                         <Number 
                             key={`primary-${index}`} 
                             number={num} 
-                            id = {`draw-primary-${num}`}
+                            id = {`draw-primary-${num || index}`}
                             type={"Primary"} 
                             isDrawNumber={true} 
                             isContainerNumber={false}
@@ -33,7 +32,7 @@ const DrawNumbers = ({ primaryDrawNumbers, secondaryDrawNumbers, possibleDrawNum
                             <Number 
                                 key={`secondary-${index}`} 
                                 number={num} 
-                                id = {`draw-secondary-${num}`}
+                                id = {`draw-secondary-${num || index}`}
                                 type={"Secondary"} 
                                 isDrawNumber={true} 
                                 isContainerNumber={false}

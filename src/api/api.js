@@ -1,7 +1,8 @@
-// api.js
+
 import config from '../config/config';
 
-const fetchLatestResults = async () => {
+const getLatestDrawResults = async () => {
+
   const url = config.API_URL_LATESTRESULTS;
   const requestBody = {
     "CompanyId": "GoldenCasket",
@@ -25,9 +26,9 @@ const fetchLatestResults = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching latest results:', error);
-    throw error;
+      console.error('Error fetching latest results:', error);
+      throw error;
   }
 };
 
-export default fetchLatestResults;
+export default getLatestDrawResults;
