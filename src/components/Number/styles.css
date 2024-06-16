@@ -1,0 +1,47 @@
+.number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: purple; /* Set text color to purple */
+    font-weight: bold;
+}
+
+.number-round {
+    border-radius: 50%; /* Make the draw numbers round */
+    justify-content: center;
+    align-items: center;
+    width:20px;
+    height:20px;
+    background-color: lightgrey;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.number-round-primary {
+    color: white; /* Set text color to purple */
+    background-color: darkblue; /* Set text color to purple */
+}
+
+.number-round-secondary{
+    color:grey; /* Set text color to grey */
+}
+.container-number {
+    background-color: lightgrey;
+}
+
+.number-cross {
+    position: relative; /* Required for pseudo-element positioning */
+}
+
+.number-cross::after {
+    content: '✖'; /* Cross mark */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:rgb(194, 112, 194);
+    font-size: 42px; /* Adjust size as needed */
+    pointer-events: none; /* Ensure it doesn't interfere with interactions */
+    opacity: 0.2; /* Make the cross semi-transparent */
+}
